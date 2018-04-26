@@ -5,7 +5,9 @@ services:
     container_name: elasticsearch
     environment:
       - cluster.name=home-cl
-      - bootstrap.memory_lock=true
+      - bootstrap.memory_lock=false
+      - "action.auto_create_index=.security,.monitoring*,.watches,.triggered_watches,.watcher-history*"
+      - "action.destructive_requires_name=false"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -15,6 +17,7 @@ services:
       - elastic_data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+      - 9300:9300
     networks:
       - esnet
   kibana:
@@ -39,6 +42,7 @@ services:
       - SERVER_NAME=logstash
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - XPACK_MONITORING_ENABLED=true
+      - XPACK_MONITORING_ELASTICSEARCH.URL=http://elasticsearch:9200
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -48,7 +52,64 @@ services:
       - 5044:5044
     networks:
       - esnet
-
+  heartbeat:
+    image: docker.elastic.co/beats/heartbeat:6.2.4
+    container_name: heartbeat
+    environment:
+      - SERVER_NAME=heartbeat
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - XPACK_MONITORING_ENABLED=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /elk/heartbeat/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
+    networks:
+      - esnet
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:6.2.4
+    container_name: heartbeat
+    environment:
+      - SERVER_NAME=metricbeat
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - XPACK_MONITORING_ENABLED=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /elk/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - esnet
+  packetbeat:
+    image: docker.elastic.co/beats/packetbeat:6.2.4
+    container_name: packetbeat
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - SERVER_NAME=packetbeat
+      #- ELASTICSEARCH_URL=http://elasticsearch:9200
+      - XPACK_MONITORING_ENABLED=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /elk/packetbeat/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml
+    deploy:
+      mode: replicated
+      replicas: 0
+      #placement:
+      #  constraints: [node.role == manager]
+    networks:
+      - esnet
+      
 volumes:
   elastic_data:
     driver: local
