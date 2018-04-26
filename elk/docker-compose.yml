@@ -41,6 +41,7 @@ services:
     environment:
       - SERVER_NAME=logstash
       - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - http.port=9600
       - XPACK_MONITORING_ENABLED=true
       - XPACK_MONITORING_ELASTICSEARCH.URL=http://elasticsearch:9200
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -50,6 +51,7 @@ services:
         hard: -1
     ports:
       - 5044:5044
+      - 9600:9600
     networks:
       - esnet
   heartbeat:
