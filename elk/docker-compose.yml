@@ -1,7 +1,7 @@
 version: '3.0'
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.1
     container_name: elasticsearch
     environment:
       - cluster.name=home-cl
@@ -21,7 +21,7 @@ services:
     networks:
       - esnet
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.2.4
+    image: docker.elastic.co/kibana/kibana-oss:7.10.1
     container_name: kibana
     environment:
       - SERVER_NAME=kibana
@@ -36,7 +36,7 @@ services:
     networks:
       - esnet
   logstash:
-    image: docker.elastic.co/logstash/logstash:6.2.4
+    image: docker.elastic.co/logstash/logstash-oss:7.10.1
     container_name: logstash
     environment:
       - SERVER_NAME=logstash
@@ -55,7 +55,7 @@ services:
     networks:
       - esnet
   heartbeat:
-    image: docker.elastic.co/beats/heartbeat:6.2.4
+    image: docker.elastic.co/beats/heartbeat-oss:7.10.1
     container_name: heartbeat
     environment:
       - SERVER_NAME=heartbeat
@@ -71,7 +71,7 @@ services:
     networks:
       - esnet
   metricbeat:
-    image: docker.elastic.co/beats/metricbeat:6.2.4
+    image: docker.elastic.co/beats/metricbeat-oss:7.10.1
     container_name: metricbeat
     environment:
       - SERVER_NAME=metricbeat
@@ -88,7 +88,7 @@ services:
     networks:
       - esnet
   packetbeat:
-    image: docker.elastic.co/beats/packetbeat:6.2.4
+    image: docker.elastic.co/beats/packetbeat:7.10.1
     container_name: packetbeat
     cap_add:
       - NET_ADMIN
