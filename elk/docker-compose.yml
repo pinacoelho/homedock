@@ -89,7 +89,7 @@ services:
     networks:
       - esnet
   packetbeat:
-    image: docker.elastic.co/beats/packetbeat:7.10.1
+    image: docker.elastic.co/beats/packetbeat-oss:7.10.1
     container_name: packetbeat
     cap_add:
       - NET_ADMIN
