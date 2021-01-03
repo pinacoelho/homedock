@@ -43,8 +43,6 @@ services:
       - SERVER_NAME=logstash
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - http.port=9600
-      - XPACK_MONITORING_ENABLED=true
-      - XPACK_MONITORING_ELASTICSEARCH.URL=http://elasticsearch:9200
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -61,7 +59,6 @@ services:
     environment:
       - SERVER_NAME=heartbeat
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - XPACK_MONITORING_ENABLED=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -77,7 +74,6 @@ services:
     environment:
       - SERVER_NAME=metricbeat
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - XPACK_MONITORING_ENABLED=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -96,7 +92,6 @@ services:
     environment:
       - SERVER_NAME=packetbeat
       #- ELASTICSEARCH_URL=http://elasticsearch:9200
-      - XPACK_MONITORING_ENABLED=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
