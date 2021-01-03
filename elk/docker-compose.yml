@@ -89,6 +89,23 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - esnet
+  filebeat:
+    image: docker.elastic.co/beats/filebeat-oss:7.10.1
+    container_name: filebeat
+    environment:
+      - SERVER_NAME=filebeat
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /persistent/elk/filebeat:/usr/share/filebeat/config
+      - /var/lib/docker/containers:/usr/share/filebeat/dockerlogs:ro
+    networks:
+      - esnet
   packetbeat:
     image: docker.elastic.co/beats/packetbeat-oss:7.10.1
     container_name: packetbeat
