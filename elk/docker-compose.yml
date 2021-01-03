@@ -15,6 +15,7 @@ services:
         soft: -1
         hard: -1
     volumes:
+      - /persistent/elk/elasticsearch:/usr/share/elasticsearch/config
       - elastic_data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
@@ -32,6 +33,8 @@ services:
       memlock:
         soft: -1
         hard: -1
+    volumes:
+      - /persistent/elk/kibana:/usr/share/kibana/config
     ports:
       - 5601:5601
     networks:
@@ -48,6 +51,8 @@ services:
       memlock:
         soft: -1
         hard: -1
+    volumes:
+      - /persistent/elk/logstash:/usr/share/logstash/config
     ports:
       - 5044:5044
       - 9600:9600
@@ -65,7 +70,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - /elk/heartbeat/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
+      - /persistent/elk/heartbeat:/usr/share/heartbeat/config
     networks:
       - esnet
   metricbeat:
@@ -80,7 +85,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - /elk/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+      - /persistent/elk/metricbeat:/usr/share/metricbeat/config
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - esnet
@@ -103,12 +108,12 @@ services:
         hard: -1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /elk/packetbeat/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml
     deploy:
       mode: replicated
       replicas: 0
       #placement:
       #  constraints: [node.role == manager]
+      - /persistent/elk/packetbeat:/usr/share/packetbeat/config
     networks:
       - esnet
       
