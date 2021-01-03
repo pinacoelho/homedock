@@ -125,15 +125,10 @@ services:
         hard: -1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    deploy:
-      mode: replicated
-      replicas: 0
-      #placement:
-      #  constraints: [node.role == manager]
       - /persistent/elk/packetbeat:/usr/share/packetbeat/config
     networks:
       - esnet
-      
+
 volumes:
   elastic_data:
     driver: local
