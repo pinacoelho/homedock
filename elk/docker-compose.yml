@@ -91,7 +91,11 @@ services:
       - NET_ADMIN
     environment:
       - SERVER_NAME=packetbeat
+<<<<<<< Updated upstream
       #- ELASTICSEARCH_URL=http://elasticsearch:9200
+=======
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+>>>>>>> Stashed changes
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
